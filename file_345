@@ -1,0 +1,72 @@
+Задание №1-3
+
+cook_book = {
+  'омлет': [
+    {'ingredient_name': 'яйцо', 'quantity': 2, 'measure': 'шт.'},
+    {'ingredient_name': 'молоко', 'quantity': 100, 'measure': 'мл'},
+    {'ingredient_name': 'помидор', 'quantity': 2, 'measure': 'шт'}
+  ],
+  'утка по-пекински': [
+    {'ingredient_name': 'утка', 'quantity': 1, 'measure': 'шт'},
+    {'ingredient_name': 'вода', 'quantity': 2, 'measure': 'л'},
+    {'ingredient_name': 'мед', 'quantity': 3, 'measure': 'ст.л'},
+    {'ingredient_name': 'соевый соус', 'quantity': 60, 'measure': 'мл'}
+  ],
+  'запеченный картофель': [
+    {'ingredient_name': 'картофель', 'quantity': 1, 'measure': 'кг'},
+    {'ingredient_name': 'чеснок', 'quantity': 3, 'measure': 'зубч'},
+    {'ingredient_name': 'сыр гауда', 'quantity': 100, 'measure': 'г'}
+  ]
+}
+
+
+def get_shop_list_by_dishes(dishes, person_count):
+    shop_list = {}
+
+    for dish in dishes:
+        if dish in cook_book:
+            ingredients = cook_book[dish]
+            for ingredient in ingredients:
+                ingredient_name = ingredient['ingredient_name']
+                quantity = ingredient['quantity'] * person_count
+                measure = ingredient['measure']
+
+                if ingredient_name not in shop_list:
+                    shop_list[ingredient_name] = {'measure': measure, 'quantity': quantity}
+                else:
+                    shop_list[ingredient_name]['quantity'] += quantity
+
+    return shop_list
+
+result = get_shop_list_by_dishes(['запеченный картофель', 'омлет'], 2)
+print(result)
+
+
+Задание №3
+
+import os
+
+def merge_files(file1, file2, output_file):
+    with open(file1, 'r') as f1:
+        content1 = f1.readlines()
+    num_lines1 = len(content1)
+
+    with open(file2, 'r') as f2:
+        content2 = f2.readlines()
+    num_lines2 = len(content2)
+
+    sorted_content = sorted([(file1, num_lines1, content1), (file2, num_lines2, content2)], key=lambda x: x[1])
+
+    with open(output_file, 'w') as output:
+        for filename, num_lines, lines in sorted_content:
+            output.write(f'{filename}\n{num_lines}\n')
+            output.write(''.join(lines))
+
+file1 = '1.txt'
+file2 = '2.txt'
+output_file = 'result.txt'
+
+merge_files(file1, file2, output_file)
+
+with open(output_file, 'r') as f:
+    print(f.read())
